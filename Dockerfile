@@ -1,17 +1,17 @@
-# Use Dart official image
-FROM dart:stable
+# Use Node.js official image
+FROM node:20
 
-# Set working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy project files into the container
-COPY . .
+# Copy package.json first for caching
+COPY package*.json ./
 
 # Install dependencies
-RUN dart pub get
+RUN npm install
 
-# Set environment variable for the token (Render will provide this)
-ENV TOKEN=${TOKEN}
+# Copy the rest of the files
+COPY . .
 
 # Start the bot
-CMD ["dart", "run"]
+CMD ["node", "index.js"]
