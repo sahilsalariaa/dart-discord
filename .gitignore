@@ -10,7 +10,7 @@ yarn-error.log*
 
 # Environment variables / secrets
 .env
-config.json   # if your local config.json has your bot token
+config.json   # local bot token
 
 # Optional: OS-specific files
 .DS_Store
@@ -18,3 +18,7 @@ Thumbs.db
 
 # Optional: build/output folders
 dist/
+
+# Dart tools (if any leftover Dart files)
+.dart_tool/
+pubspec.lock
