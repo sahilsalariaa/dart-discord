@@ -13,11 +13,5 @@ RUN npm install
 # Copy the rest of the project files
 COPY . .
 
-# Set environment variable for the token (Render will provide this)
-ENV TOKEN=${TOKEN}
-
-# Expose the port if your bot uses one (optional)
-# EXPOSE 3000
-
 # Start the bot
 CMD ["node", "index.js"]
