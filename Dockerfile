@@ -1,17 +1,34 @@
-# Use Dart official image
+# Base image with Dart
 FROM dart:stable
 
-# Set working directory inside the container
+# Install Node.js 20
+RUN apt-get update && apt-get install -y curl \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean
+
+# Set working directory
 WORKDIR /app
 
-# Copy project files into the container
+# Copy Node.js dependency files
+COPY package*.json ./
+
+# Install Node.js dependencies
+RUN npm install
+
+# Copy Dart dependency file
+COPY pubspec.* ./
+
+# Get Dart dependencies
+RUN dart pub get || true  # Ignore if no Dart project
+
+# Copy the rest of your files
 COPY . .
 
-# Install dependencies
-RUN dart pub get
+# Expose HTTP port for keep_alive.js
+EXPOSE 8080
 
-# Set environment variable for the token (Render will provide this)
-ENV TOKEN=${TOKEN}
-
-# Start the bot
-CMD ["dart", "run"]
+# Start both bots
+# "node index.js" starts Node bot
+# "dart run" starts Dart bot
+CMD sh -c "node index.js & dart run"
